@@ -1,0 +1,28 @@
+name: Deploy HeadyMe
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test
+      - name: Deploy to Cloud Run
+        if: ${{ secrets.GCP_PROJECT_ID != '' }}
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: headyme
+          region: us-central1
+          source: .
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
