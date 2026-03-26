@@ -234,7 +234,7 @@ const server = app.listen(PORT, HOST, () => {
     if (process.env.NODE_ENV === 'production') {
         process.stdout.write(JSON.stringify(msg) + '\n');
     } else {
-        console.log(`HeadyMe running on ${HOST}:${PORT}`);
+        process.stdout.write(`HeadyMe running on ${HOST}:${PORT}\n`);
     }
 });
 
